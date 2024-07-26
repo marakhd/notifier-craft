@@ -5,6 +5,8 @@ description = ""
 license = "LICENSE"
 authors = ["marakhd <marakin09@mail.ru>"]
 readme = "README.md"
+keywords = ["notify"]
+repository = "https://github.com/marakhd/notifier-craft"
 
 [tool.poetry.dependencies]
 python = "^3.12"
