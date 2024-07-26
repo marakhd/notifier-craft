@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "notifiercraft"
+version = "0.1.0"
+description = ""
+license = "LICENSE"
+authors = ["marakhd <marakin09@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+#[tool.poetry.scripts]
+#app = "module:fn"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
