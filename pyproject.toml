@@ -13,6 +13,8 @@ python = "^3.12"
 
 #[tool.poetry.scripts]
 #app = "module:fn"
+pytelegrambotapi = "^4.21.0"
+aiogram = "^3.10.0"
 
 
 [build-system]
