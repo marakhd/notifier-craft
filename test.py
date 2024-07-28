@@ -7,4 +7,4 @@ client = CreateClient(
     tg
 )
 
-client.send(chat_id=2075302695, text="Hello")
+client.send.telegram(chat_id=2075302695, text="Hello").email(email="test@e.e", text)
