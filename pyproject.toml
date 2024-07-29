@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "notifiercraft"
 version = "0.1.0"
-description = ""
+description = "Async/sync framework for sending notifications"
 license = "LICENSE"
 authors = ["marakhd <marakin09@mail.ru>"]
 readme = "README.md"
-keywords = ["notify"]
+keywords = ["notify, notifycraft, notifications"]
 repository = "https://github.com/marakhd/notifier-craft"
 
 [tool.poetry.dependencies]

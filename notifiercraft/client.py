@@ -1,8 +1,10 @@
-from .sender import Telegram, Email
+from typing import Union
+
+from .sender import Telegram, AsyncTelegram, Email, AsyncEmail
 from .error import UnsupportedSenderType
 
 class CreateClient:
-    notify = {
+    _notify: dict[str, Union[list[Telegram | AsyncTelegram], list[Email | AsyncEmail]]] = {
         "telegram": [],
         "email": [],
         # "telegram-user": [],
@@ -12,14 +14,14 @@ class CreateClient:
     }
     
     def __init__(self, *senders) -> None:
-        self.senders_types(senders)
+        self.__senders_types(senders)
         
-    def senders_types(self, senders):
+    def __senders_types(self, senders):
         for sender in senders:
             if isinstance(sender, Telegram):
-                self.notify["telegram"].append(sender)
+                self._notify["telegram"].append(sender)
             elif isinstance(sender, Email):
-                self.notify["email"].append(sender)
+                self._notify["email"].append(sender)
             else:
                 raise UnsupportedSenderType
             
@@ -29,21 +31,21 @@ class CreateClient:
 
 
 class Send:
-    def __init__(self, client) -> None:
-        self.notify = client.notify
+    def __init__(self, client: CreateClient) -> None:
+        self.__notify = client._notify
 
     def all(self, text):
-        for tg in self.notify["telegram"]:
+        for tg in self.__notify["telegram"]:
             tg.send_message(text=text)
-        for email in self.notify["email"]:
+        for email in self.__notify["email"]:
             email.send_message(text=text)
 
     def telegram(self, chat_id, text):
-        for tg in self.notify["telegram"]:
+        for tg in self.__notify["telegram"]:
             tg.send_message(chat_id=chat_id, text=text)
 
     def email(self, email, text):
-        for email in self.notify["email"]:
+        for email in self.__notify["email"]:
             email.send_message(email=email, text=text)
 
 
