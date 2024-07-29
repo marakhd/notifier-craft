@@ -1,4 +1,3 @@
-from telebot import TeleBot
 from .sender import Telegram, Email
 from .error import UnsupportedSenderType
 
@@ -6,9 +5,10 @@ class CreateClient:
     notify = {
         "telegram": [],
         "email": [],
+        # "telegram-user": [],
         # "discord": [],
-        # "sms": [],
         # "vk": []
+        # "sms": [],
     }
     
     def __init__(self, *senders) -> None:
@@ -22,15 +22,28 @@ class CreateClient:
                 self.notify["email"].append(sender)
             else:
                 raise UnsupportedSenderType
-    
-    class send:
-        def telegram(self, chat_id, text):
-            for tg in self.notify["telegram"]:
-                tg.send_message(chat_id=chat_id, text=text)
-                
-        def email(self, email, text):
-            for email in self.notify["email"]:
-                email.send_message(email=email, text=text)
-                
-        
+            
+    @property
+    def send(self):
+        return Send(self)
+
+
+class Send:
+    def __init__(self, client) -> None:
+        self.notify = client.notify
+
+    def all(self, text):
+        for tg in self.notify["telegram"]:
+            tg.send_message(text=text)
+        for email in self.notify["email"]:
+            email.send_message(text=text)
+
+    def telegram(self, chat_id, text):
+        for tg in self.notify["telegram"]:
+            tg.send_message(chat_id=chat_id, text=text)
+
+    def email(self, email, text):
+        for email in self.notify["email"]:
+            email.send_message(email=email, text=text)
+
 

@@ -1,2 +1,2 @@
-from .telegram_sync import Telegram
-from .email_sync import Email
+from .telegram import Telegram, AsyncTelegram
+from .email import Email, AsyncEmail
