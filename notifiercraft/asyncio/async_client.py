@@ -10,7 +10,7 @@ class CreateAsyncClient:
     def __init__(self, *senders) -> None:
         run(self.__senders_types(senders))
 
-    def __senders_types(self, senders: tuple):
+    async def __senders_types(self, senders: tuple):
         for sender in senders:
             if isinstance(sender, AsyncTelegram):
                 self._notify["telegram"].append(sender)
@@ -27,16 +27,14 @@ class AsyncSend:
     def __init__(self, client: CreateAsyncClient) -> None:
         self.__notify: dict[str, list] = client._notify
 
-    async def all(self, text):
-        async for tg in self.__notify["telegram"]:
-            await tg.send_message(text=text)
-        async for email in self.__notify["email"]:
-            email.send_message(text=text)
+    async def all(self, chat_id, email, text, subject_email):
+        await self.telegram(chat_id=chat_id, text=text)
+        await self.email(email=email, text=text, subject=subject_email)
 
     async def telegram(self, chat_id, text):
-        async for tg in self.__notify["telegram"]:
+        for tg in self.__notify["telegram"]:
             await tg.send_message(chat_id=chat_id, text=text)
 
-    async def email(self, email, text):
-        async for email in self.__notify["email"]:
-            await email.send_message(email=email, text=text)
+    async def email(self, email, text, subject):
+        for mail in self.__notify["email"]:
+            await mail.send_message(email=email, text=text, subject=subject)
