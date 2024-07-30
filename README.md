@@ -12,6 +12,12 @@
 ```bash
 pip install notifier-craft
 ```
+
+- Установка, используя пакетный менеджер poetry
+
+```bash
+poetry add notifier-craft
+```
 - Установка с GitHub
 
 ```bash
