@@ -1,7 +1,7 @@
 # Notifier Craft
 
-**Notifier Craft** — это мощный фреймворк для Python, предназначенный для работы с уведомлениями. 
-Он предоставляет как синхронные, так и асинхронные методы для отправки уведомлений через различные каналы. 
+**Notifier Craft** — это мощная библиотека для Python, предназначенный для работы с уведомлениями. 
+Она предоставляет как синхронные, так и асинхронные методы для отправки уведомлений через различные каналы. 
 На данный момент поддерживаются уведомления через Telegram-ботов (как синхронно с помощью Telebot, так и асинхронно с помощью aiogram) и через электронную почту (с использованием smtplib). 
 В будущем планируется добавить поддержку Telegram userbot, Discord-ботов, VK-ботов, а также рассылку SMS.
 
@@ -22,56 +22,74 @@ pip install git+https://github.com/marakhd/notifier-craft
 
 ### Синхронные методы
 
-Чтобы отправить уведомление с помощью синхронных методов, используйте библиотеку Telebot для Telegram и smtplib для email.
+Пример для иcпользования с синхронными методами
 
-#### Пример использования с Telegram (Telebot)
+```python
+from notifiercraft import CreateClient, Telegram, Email # Импортируем Client и Senders
 
-    from notifier_craft import TelegramNotifier
+tg = Telegram(
+    token="6804851619:AAElnF-gnZ5_X9rDZ6LiJvDODgQG2CURvcA"
+)
 
-    # Создайте экземпляр TelegramNotifier с вашим токеном и ID чата
-    notifier = TelegramNotifier(token='YOUR_TELEGRAM_BOT_TOKEN', chat_id='YOUR_CHAT_ID')
+# Любой sender имеет метод send_message для отправки без создания клиента, клиент нужен для удобного управления
+# tg.send_message(chat_id=0123456,
+#     text="test",
+#     parse_mode = "HTML",)
 
-    # Отправьте сообщение
-    notifier.send_message('Привет, это синхронное уведомление!')
+email = Email(
+    host="smtp.gmail.com",
+    port=587,
+    login="example@gmail.com",
+    passw="passw"
+)
+client = CreateClient(
+    tg,
+    email
+)
 
-#### Пример использования с Email (smtplib)
-
-    from notifier_craft import EmailNotifier
-
-    # Создайте экземпляр EmailNotifier с вашими настройками SMTP
-    notifier = EmailNotifier(
-        smtp_server='smtp.example.com',
-        smtp_port=587,
-        smtp_user='your_email@example.com',
-        smtp_password='your_password',
-        from_email='your_email@example.com'
-    )
-
-    # Отправьте email
-    notifier.send_email(
-        to_email='recipient@example.com',
-        subject='Тема письма',
-        message='Содержание письма'
-    )
+client.send.telegram(chat_id=2075302695, text="Hello1") # Отправка через Email
+client.send.email(email="marakin09@mail.ru", text="Hello1", subject="subject") # Отправка через Telegram
+client.send.all(chat_id=2075302695, email="marakin09@mail.ru", text="Hello1", subject_email="subject") # Отправка всеми способами
+```
 
 ### Асинхронные методы
 
-Для асинхронной отправки уведомлений используйте библиотеку aiogram для Telegram.
+Пример для иcпользования с асинхронными методами
 
-#### Пример использования с Telegram (aiogram)
+```python
+from notifiercraft import CreateAsyncClient, AsyncTelegram, AsyncEmail # Импортируем AsyncClient и AsyncSenders
+import asyncio
 
-    import asyncio
-    from notifier_craft import AsyncTelegramNotifier
+tg = AsyncTelegram(
+    token="6804851619:AAElnF-gnZ5_X9rDZ6LiJvDODgQG2CURvcA"
+)
 
-    async def main():
-        # Создайте экземпляр AsyncTelegramNotifier с вашим токеном и ID чата
-        notifier = AsyncTelegramNotifier(token='YOUR_TELEGRAM_BOT_TOKEN', chat_id='YOUR_CHAT_ID')
-        
-        # Отправьте сообщение
-        await notifier.send_message('Привет, это асинхронное уведомление!')
+# Любой sender имеет метод send_message для отправки без создания клиента, клиент нужен для удобного управления
+# await tg.send_message(chat_id=0123456,
+#     text="test",
+#     parse_mode = "HTML",)
 
-    # Запустите асинхронную функцию
-    asyncio.run(main())
+
+email = AsyncEmail(
+    host="smtp.gmail.com",
+    port=587,
+    login="example@gmail.com",
+    passw="password"
+)
+client = CreateAsyncClient(
+    tg,
+    email
+)
+
+async def main():
+    await client.send.telegram(chat_id=2075302695, text="AsyncHello1") # Отправка через Email
+    await client.send.email(email="marakin09@mail.ru", text="AsyncHello1", subject="Asyncsubject") # Отправка через Telegram
+    await client.send.all(chat_id=2075302695, email="marakin09@mail.ru", text="AsyncHello1", subject_email="Asyncsubject") # Отправка всеми способами
+    await tg.close() # Закрываем сессию
+    
+asyncio.run(main())
+```
+
 
 ## Планируемые обновления
 
@@ -92,4 +110,3 @@ pip install git+https://github.com/marakhd/notifier-craft
 
 ---
 
-Если у вас есть вопросы или предложения, не стесняйтесь обращаться к нам!

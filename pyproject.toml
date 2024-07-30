@@ -1,12 +1,15 @@
 [tool.poetry]
-name = "notifiercraft"
+name = "notifier-craft"
 version = "0.1.0"
-description = "Async/sync framework for sending notifications"
-license = "LICENSE"
+description = "Async/sync library for sending notifications"
+license = "MIT"
 authors = ["marakhd <marakin09@mail.ru>"]
 readme = "README.md"
-keywords = ["notify, notifycraft, notifications"]
+keywords = ["notify, notifycraft, notify-craft, notifications, marakhd"]
 repository = "https://github.com/marakhd/notifier-craft"
+packages = [
+    {include = "notifiercraft"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
