@@ -7,8 +7,8 @@ tg = AsyncTelegram(
 email = AsyncEmail(
     host="smtp.gmail.com",
     port=587,
-    login="artemmarakin072@gmail.com",
-    passw="qqwfpakydrohmbpb"
+    login="example@gmail.com",
+    passw="password"
 )
 client = CreateAsyncClient(
     tg,
